@@ -1,0 +1,100 @@
+table.admin-table.admin-table-responsive {}
+
+@media(max-width: 767px) {
+    .table.admin-table {
+        font-size: 14px;
+    }
+    .table-responsive {
+        border: none;
+        overflow: hidden;
+    }
+    .table-responsive>.table-bordered>tbody>tr:not(:last-child) {
+        margin-bottom: 10px;
+    }
+    .table-responsive>.table-bordered>tbody>tr>td:first-child,
+    .table-responsive>.table-bordered>tbody>tr>th:first-child,
+    .table-responsive>.table-bordered>tfoot>tr>td:first-child,
+    .table-responsive>.table-bordered>tfoot>tr>th:first-child,
+    .table-responsive>.table-bordered>thead>tr>td:first-child,
+    .table-responsive>.table-bordered>thead>tr>th:first-child {
+        border-left: 1px solid #ddd;
+    }
+    .table-responsive>.table-bordered>tbody>tr>td:last-child,
+    .table-responsive>.table-bordered>tbody>tr>th:last-child,
+    .table-responsive>.table-bordered>tfoot>tr>td:last-child,
+    .table-responsive>.table-bordered>tfoot>tr>th:last-child,
+    .table-responsive>.table-bordered>thead>tr>td:last-child,
+    .table-responsive>.table-bordered>thead>tr>th:last-child {
+        border-right: 1px solid #ddd;
+    }
+    .table-responsive>.table-bordered>tbody>tr:last-child>td,
+    .table-responsive>.table-bordered>tbody>tr:last-child>th,
+    .table-responsive>.table-bordered>tfoot>tr:last-child>td,
+    .table-responsive>.table-bordered>tfoot>tr:last-child>th {
+        border-bottom: 1px solid #ddd;
+    }
+    .table-responsive>.table-bordered>tbody>tr>td:not(:last-child) {
+        border-bottom: none;
+    }
+    table.admin-table.admin-table-responsive,
+    table.admin-table.admin-table-responsive tbody,
+    table.admin-table.admin-table-responsive tr {
+        display: block;
+    }
+    table.admin-table.admin-table-responsive>thead {
+        display: none;
+    }
+    table.admin-table.admin-table-responsive>tbody td {
+        display: block;
+        padding-left: 50%;
+        /*width: 100%;*/
+        overflow: hidden;
+        white-space: normal;
+        word-wrap: break-word;
+        position: relative;
+        min-height: 37px;
+    }
+    table.admin-table.admin-table-responsive>tbody td:before {
+        width: calc(50% - 16px);
+        padding: 8px;
+        left: 0;
+        top: 0;
+        position: absolute;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: bold;
+    }
+    table.admin-table.admin-table-responsive>tbody td:before {
+        content: attr(data-title);
+    }
+    table.admin-table.admin-table-responsive button,
+    table.admin-table.admin-table-responsive a {
+        display: block;
+    }
+    table.admin-table.admin-table-responsive button:not(:last-child),
+    table.admin-table.admin-table-responsive a:not(:last-child) {
+        display: block;
+        margin-bottom: 5px;
+    }
+    /*Special Case -> Deposit Control Table*/
+    table.admin-table.admin-table-responsive.first-child-mobile-last tr {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+    table.admin-table.admin-table-responsive.first-child-mobile-last tr>td:first-child {
+        -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+        order: 1;
+        border-top: none;
+        border-bottom: 1px solid #ddd;
+    }
+    /*Special Case -> Deposit Control Table*/
+
+    table.dataTable td.dt-center, table.dataTable td.dt-right{
+        text-align:left;
+    }
+}

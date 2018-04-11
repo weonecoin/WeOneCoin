@@ -1,0 +1,604 @@
+﻿
+
+/***CUSTOM TEMPLATE***/
+
+body {
+  background: #F1F3FA;
+}
+
+/* Profile container */
+.profile {
+  margin: 20px 0;
+}
+
+/* Profile sidebar */
+.profile-sidebar {
+  padding: 20px 0 10px 0;
+  background: #fff;
+  min-height: 1100px;
+}
+
+.profile-userpic img {
+  float: none;
+  margin: 0 auto;
+  width: 50%;
+  height: 50%;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  border-radius: 50% !important;
+}
+
+.profile-usertitle {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-usertitle-name {
+  color: #5a7391;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.profile-usertitle-job {
+  text-transform: uppercase;
+  color: #5b9bd1;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.profile-userbuttons {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.profile-userbuttons .btn {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 15px;
+  margin-right: 5px;
+}
+
+.profile-userbuttons .btn:last-child {
+  margin-right: 0px;
+}
+    
+.profile-usermenu {
+  margin-top: 30px;
+}
+
+.profile-usermenu ul li {
+  border-bottom: 1px solid #f0f4f7;
+}
+
+.profile-usermenu ul li:last-child {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li a {
+  color: #000000;
+  font-size: 14px;
+  font-weight: bolder;
+  text-align:left;
+  padding: 20px;
+}
+
+.profile-usermenu ul li a i {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.profile-usermenu ul li a:hover {
+	color: #ea6323;
+    background-color: #F5F5F5;
+}
+
+.profile-usermenu ul li.active {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li.active a {
+    color: #ea6323;
+    background-color: purple;
+    /* border-left: 2px solid #5b9bd1; */
+    margin-left: -2px;
+    color: white;
+}
+
+/* Profile Content */
+.profile-content {
+  padding: 45px 20px 20px 20px;
+  background: #fff;
+  min-height: 1100px;
+}
+.line{
+	border-top:2px solid #ddd; 
+	padding:12px 0px
+}
+.line_right{
+	border-right:1px dashed #ddd;
+	padding-left: 0px;
+}
+.line_right h4{
+	color:#ee3523
+}
+.line_top{
+	border-top:thin solid #ddd
+}
+.line_usd{
+	 border-right:1px dashed #ddd
+}
+.line_usd h4{
+	 color:#009900
+}
+.line_last{
+	border-top:2px solid #ddd; 
+	padding: 22px 0px;
+}
+.line_tbl{
+	 border-bottom:thin solid #ddd
+}
+.inp{
+	width:100%;
+	height:40px
+}
+.inp_tot{
+	width:100%; 
+	border:dotted 0.5px; 
+	height:60px
+}
+.buy_btn{
+	 background-color:#ee3523;
+	 color:#fff;
+	 width:100%
+}
+.sell_btn{
+	 background-color:#009900;
+	 color:#fff;
+	 width:100%
+}
+
+table, th, td {
+    border: none;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+.fa{
+	font-size:12px !important
+}
+.green td:first-child{
+	color:#009900;
+	font-weight:bold;
+}
+.green td:last-child{
+	color:#009900;
+	font-weight:bold;
+}
+.red td:first-child{
+	color:#ee3523;
+	font-weight:bold;
+}
+.red td:last-child{
+	color:#ee3523;
+	font-weight:bold;
+}
+.current{
+	background-color:#f5f5f5; 
+	padding:8px
+}
+.text{
+    text-align:right;
+	padding:6px
+}
+.total_gd2{
+	margin:-271px
+}
+.total_usd{
+	margin:-255px
+}
+.buy{
+    margin: -271px
+}
+.gd2{
+    margin: -271px;
+}
+.usd{
+    margin: -256px;
+}
+.sell{
+    margin: -256px;
+}
+
+@media only screen and (max-width: 550px){
+td,th,tr {
+	/*display:block;
+	text-align:center;*/
+}
+
+tr:nth-child(even) {
+    /*background-color: #f5f5f5;*/
+}
+}
+
+@media only screen and (max-width: 990px){
+.profile-sidebar {
+    padding: 20px 0 10px 0;
+    background: #fff;
+    min-height: auto;
+}
+}
+
+@media ( min-width: 990px) and (max-width: 1199px){
+.total_gd2{
+	margin:-215px
+}
+.total_usd{
+	margin:-200px
+}
+.buy{
+    margin: -215px;
+}
+.gd2{
+    margin: -216px;
+}
+.usd{
+    margin: -200px;
+}
+.sell{
+    margin: -200px;
+}
+}
+
+/*MARGIN TEXT BOX*/
+@media (min-width:769px) and (max-width:990px){
+
+.total_gd2{
+	margin: -630px;
+}
+.total_usd{
+	margin: -615px;
+}
+.buy{
+    margin: -630px;
+}
+.gd2{
+    margin: -630px;
+}
+.usd{
+    margin: -615px;
+}
+.sell{
+    margin: -615px;
+}
+}
+
+@media (max-width:768px){
+
+.total_gd2{
+	margin: -570px;
+}
+.buy{
+    margin: -570px;
+}
+.gd2{
+    margin: -570px;
+}
+.total_usd{
+	margin: -560px;
+}
+.usd{
+    margin: -560px;
+}
+.sell{
+    margin: -560px;
+}
+}
+
+@media (max-width:750px){
+
+.total_gd2{
+	margin: -550px;
+}
+.buy{
+    margin: -550px;
+}
+.gd2{
+    margin: -550px;
+}
+.total_usd{
+	margin: -540px;
+}
+.usd{
+    margin: -540px;
+}
+.sell{
+    margin: -540px;
+}
+}
+
+@media (max-width:715px){
+
+.total_gd2{
+	margin: -530px;
+}
+.buy{
+    margin: -530px;
+}
+.gd2{
+    margin: -530px;
+}
+.total_usd{
+	margin: -520px;
+}
+.usd{
+    margin: -520px;
+}
+.sell{
+    margin: -520px;
+}
+}
+
+@media (max-width:690px){
+
+.total_gd2{
+	margin: -510px;
+}
+.buy{
+    margin: -510px;
+}
+.gd2{
+    margin: -510px;
+}
+.total_usd{
+	margin: -500px;
+}
+.usd{
+    margin: -500px;
+}
+.sell{
+    margin: -500px;
+}
+}
+
+@media (max-width:670px){
+
+.total_gd2{
+	margin: -480px;
+}
+.buy{
+    margin: -480px;
+}
+.gd2{
+    margin: -480px;
+}
+.total_usd{
+	margin: -470px;
+}
+.usd{
+    margin: -470px;
+}
+.sell{
+    margin: -470px;
+}
+}
+
+@media (max-width:640px){
+
+.total_gd2{
+	margin: -460px;
+}
+.buy{
+    margin: -460px;
+}
+.gd2{
+    margin: -460px;
+}
+.total_usd{
+	margin: -450px;
+}
+.usd{
+    margin: -450px;
+}
+.sell{
+    margin: -450px;
+}
+}
+
+@media (max-width:620px){
+
+.total_gd2{
+	margin: -440px;
+}
+.buy{
+    margin: -440px;
+}
+.gd2{
+    margin: -440px;
+}
+.total_usd{
+	margin: -430px;
+}
+.usd{
+    margin: -430px;
+}
+.sell{
+    margin: -430px;
+}
+}
+
+@media (max-width:600px){
+
+.total_gd2{
+	margin: -420px;
+}
+.buy{
+    margin: -420px;
+}
+.gd2{
+    margin: -420px;
+}
+.total_usd{
+	margin: -410px;
+}
+.usd{
+    margin: -410px;
+}
+.sell{
+    margin: -410px;
+}
+}
+
+@media (max-width:580px){
+
+.total_gd2{
+	margin: -400px;
+}
+.buy{
+    margin: -400px;
+}
+.gd2{
+    margin: -400px;
+}
+.total_usd{
+	margin: -390px;
+}
+.usd{
+    margin: -390px;
+}
+.sell{
+    margin: -390px;
+}
+}
+
+@media (max-width:560px){
+
+.total_gd2{
+	margin: -380px;
+}
+.buy{
+    margin: -380px;
+}
+.gd2{
+    margin: -380px;
+}
+.total_usd{
+	margin: -370px;
+}
+.usd{
+    margin: -370px;
+}
+.sell{
+    margin: -370px;
+}
+}
+
+@media (max-width:540px){
+
+.total_gd2{
+	margin: -360px;
+}
+.buy{
+    margin: -360px;
+}
+.gd2{
+    margin: -360px;
+}
+.total_usd{
+	margin: -350px;
+}
+.usd{
+    margin: -350px;
+}
+.sell{
+    margin: -350px;
+}
+}
+
+@media (max-width:520px){
+.total_gd2{
+	margin: -340px;
+}
+.buy{
+    margin: -340px;
+}
+.gd2{
+    margin: -340px;
+}
+.total_usd{
+	margin: -320px;
+}
+.usd{
+    margin: -320px;
+}
+.sell{
+    margin: -320px;
+}
+}
+
+@media (max-width:500px){
+.total_gd2{
+	margin: -310px;
+}
+.buy{
+    margin: -310px;
+}
+.gd2{
+    margin: -310px;
+}
+.total_usd{
+	margin: -290px;
+}
+.usd{
+    margin: -290px;
+}
+.sell{
+    margin: -290px;
+}
+}
+
+@media (max-width:480px){
+.total_gd2{
+	margin: -280px;
+}
+.buy{
+    margin: -280px;
+}
+.gd2{
+    margin: -280px;
+}
+.total_usd{
+	margin: -260px;
+}
+.usd{
+    margin: -260px;
+}
+.sell{
+    margin: -260px;
+}
+}
+
+@media (max-width:410px){
+.total_gd2{
+	margin: -230px;
+}
+.buy{
+    margin: -230px;
+}
+.gd2{
+    margin: -230px;
+}
+.total_usd{
+	margin: -220px;
+}
+.usd{
+    margin: -220px;
+}
+.sell{
+    margin: -220px;
+}
+}
+

@@ -1,0 +1,962 @@
+﻿
+	<div id="page1_page" class="paginated page">
+    <!-- Bootstrap -->
+    <!--<link href="css/bootstrap.css" rel="stylesheet">-->
+    <link href="css/custom.css" rel="stylesheet">
+    <link href="css/font-awesome.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <link href="css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="css/portal-responsive-table.css" rel="stylesheet" />
+
+
+        <style>
+            .position_re {
+               position:relative;
+            }
+
+            .position_ab {
+                position: absolute;
+                bottom: 25px;
+                z-index: 1;
+                left: 8px;
+            }
+
+            .position_ab2 {
+                position: absolute;
+                bottom: 29px;
+                z-index: 1;
+                left: 8px;
+            }
+
+            .position_ab3 {
+                position: absolute;
+                bottom: 39px;
+                z-index: 1;
+                left: 8px;
+            }
+
+
+            /*tab*/
+            /* Tabs panel */
+                .tabbable-panel {
+                  /*border:1px solid #eee;*/
+                  padding: 10px;
+                }
+
+                /* Default mode */
+                .tabbable-line > .nav-tabs {
+                  border: none;
+                  margin: 0px;
+                }
+                .tabbable-line > .nav-tabs > li {
+                  margin-right: 2px;
+                }
+                .tabbable-line > .nav-tabs > li > a {
+                  border: 0;
+                  margin-right: 0;
+                  color: #737373;
+                }
+                .tabbable-line > .nav-tabs > li > a > i {
+                  color: #a6a6a6;
+                }
+                .tabbable-line > .nav-tabs > li.open, .tabbable-line > .nav-tabs > li:hover {
+                  border-bottom: 4px solid #fbcdcf;
+                }
+                .tabbable-line > .nav-tabs > li.open > a, .tabbable-line > .nav-tabs > li:hover > a {
+                  border: 0;
+                  background: none !important;
+                  color: #333333;
+                }
+                .tabbable-line > .nav-tabs > li.open > a > i, .tabbable-line > .nav-tabs > li:hover > a > i {
+                  color: #a6a6a6;
+                }
+                .tabbable-line > .nav-tabs > li.open .dropdown-menu, .tabbable-line > .nav-tabs > li:hover .dropdown-menu {
+                  margin-top: 0px;
+                }
+                .tabbable-line > .nav-tabs > li.active {
+                  border-bottom: 4px solid #f3565d;
+                  position: relative;
+                }
+                .tabbable-line > .nav-tabs > li.active > a {
+                  border: 0;
+                  color: #333333;
+                }
+                .tabbable-line > .nav-tabs > li.active > a > i {
+                  color: #404040;
+                }
+                .tabbable-line > .tab-content {
+                  margin-top: -3px;
+                  background-color: #fff;
+                  border: 0;
+                  border-top: 1px solid #eee;
+                  padding: 15px 0;
+                }
+                .portlet .tabbable-line > .tab-content {
+                  padding-bottom: 0;
+                }
+
+                /* Below tabs mode */
+
+                .tabbable-line.tabs-below > .nav-tabs > li {
+                  border-top: 4px solid transparent;
+                }
+                .tabbable-line.tabs-below > .nav-tabs > li > a {
+                  margin-top: 0;
+                }
+                .tabbable-line.tabs-below > .nav-tabs > li:hover {
+                  border-bottom: 0;
+                  border-top: 4px solid #fbcdcf;
+                }
+                .tabbable-line.tabs-below > .nav-tabs > li.active {
+                  margin-bottom: -2px;
+                  border-bottom: 0;
+                  border-top: 4px solid #f3565d;
+                }
+                .tabbable-line.tabs-below > .tab-content {
+                  margin-top: -10px;
+                  border-top: 0;
+                  border-bottom: 1px solid #eee;
+                  padding-bottom: 15px;
+                }
+
+            /*tab*/
+        </style>
+
+    <script>
+    var token = '63ca310bdaa890cdea3e9a6aff0c8cde3fd5f98da1811f2a1e0e825a17c786aa';
+    var url = 'http://demo.weonecoin.com/nxt?=%2Fnxt&requestType=';
+    var myurl = 'http://exchange.scacom.tech/';
+    var pwd = '';
+    var memberId = '';
+    var clicked = false;
+    var timerOn = false;
+
+    function loadType(type) {
+        var typeID = 0;
+        switch (type) {
+            case 'USD':
+                typeID = '16460643380140819224';
+                break;
+
+            case 'CNY':
+                typeID = '17837276898690363102';
+                break;
+
+            case 'BTC':
+                typeID = '14451580695516078834';
+                break;
+        }
+        $('#typeId').val(typeID);
+        $('#AssetAmt').text('0');
+        $('.AssetUnit').text(type);
+        getLatestUpdate();
+    }
+
+    function round(value, decimals) {
+        return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+    }
+
+    function numberWithCommas(x) {
+
+        var parts = x.toString().split('.');
+        var part1 = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+        var part2 = parts[1];
+
+        return part1 + '.' + part2;
+    }
+
+    function calBuyPrice() {
+        var price = parseFloat($('#txtBuyPrice').val());
+        var qty = parseFloat($('#txtBuyQty').val());
+        if (price && qty) {
+            $('#txtBuyTotal').val(price * qty);
+        }
+    }
+
+    function calSellPrice() {
+        var price = parseFloat($('#txtSellPrice').val());
+        var qty = parseFloat($('#txtSellQty').val());
+        if (price && qty) {
+            $('#txtSellTotal').val((price * qty).toFixed(8));
+        }
+    }
+
+    function putPrice(price, qty) {
+        $('#txtBuyPrice').val(price);
+        $('#txtBuyQty').val(qty);
+        $('#txtSellPrice').val(price);
+        $('#txtSellQty').val(qty);
+        calBuyPrice();
+        calSellPrice()
+    }
+
+    function cancelClicked(rowId) {
+        if (confirm($('#msgAskCancel').text())) {
+            $.ajax({
+                url: myurl + "api/i1cancel/" + memberId
+                    + "?rowId=" + rowId
+                    + "&pwd=" + pwd,
+                headers: { 'Authorization': token },
+                success: function (data) {
+                    if (data.code == 2) {
+                        alert($('#msgCancelFailed').text());
+                    } else {
+                        alert($('#msgCancelled').text());
+                        getLatestUpdate();
+                    }
+                }
+            });
+        }
+    }
+
+    function loginClicked() {
+        $.ajax({
+            url: url + "getAccountId&secretPhrase=" + $('#login_password1').val(),
+            success: function (data) {
+                var myObj = JSON.parse(data);
+                if (myObj.accountRS && NRS.accountRS == myObj.accountRS) {
+                     pwd = $('#login_password1').val();
+                    //$('#m_modal_4').modal('hide');
+                     $('#loginDiv').hide()
+                     autoUpdate();
+                     $('.AssetUnit').text('USD');
+                } else {
+                    alert($('#msgWrongPW').text());
+                    $('#login_password1').val('');
+                }
+            }
+        });
+    }
+
+    function loginEnter(e) {
+        if (e.keyCode == 13) {
+            loginClicked()
+        }
+    }
+
+    //$(document).ready(function () {
+    //    exchangePageLoad();
+    //    $('#loginDiv').hide()
+    //});
+
+    function exchangePageLoad() {
+        if (timerOn) {
+            return;
+        }
+        timerOn = true;
+        memberId = NRS.accountRS;
+        if (NRS.accountKey) {
+            pwd = NRS.accountKey
+            $('#loginDiv').hide()
+        }
+        //else {
+            //$('#m_modal_4').modal('show');
+            //$('#m_modal_4').modal({ backdrop: 'static', keyboard: false }); }
+
+        $("#btnBuy").click(function () {
+            if (clicked || $('#txtBuyPrice').val() == '' || $('#txtBuyQty').val() == '') {
+                return;
+            }
+            clicked = true;
+            $(this).attr("disabled", "disabled");
+            $.ajax({
+                url: myurl + "api/i1buy/" + memberId
+                    + "?qty=" + $('#txtBuyQty').val()
+                        + "&price=" + $('#txtBuyPrice').val()
+                        + "&type=" + $('#typeId').val()
+                        + "&pwd=" + pwd,
+                headers: { 'Authorization': token },
+                success: function (data) {
+                    if (data.code == 0) {
+                        alert($('#msgBuyRequested').text());
+                        getLatestUpdate();
+                    } else {
+                        alert($('#msgNofund').text());
+                    }
+                    $("#btnBuy").removeAttr("disabled")
+                }
+            });
+            clicked = false;
+        });
+        $("#btnSell").click(function () {
+            if (clicked || $('#txtSellPrice').val() == '' || $('#txtSellQty').val() == '') {
+                return;
+            }
+            clicked = true;
+            $(this).attr("disabled", "disabled");
+            $.ajax({
+                url: myurl + "api/i1sell/" + memberId
+                    + "?qty=" + $('#txtSellQty').val()
+                    + "&price=" + $('#txtSellPrice').val()
+                    + "&type=" + $('#typeId').val()
+                    + "&pwd=" + pwd,
+                headers: { 'Authorization': token },
+                success: function (data) {
+                    if (data.code == 0) {
+                        alert($('#msgSellRequested').text());
+                        getLatestUpdate();
+                    } else {
+                        alert($('#msgNofund').text());
+                    }
+                    $("#btnSell").removeAttr("disabled")
+                }
+            });
+            clicked = false;
+        });
+        if (pwd.length > 0) {
+            autoUpdate();
+        }
+    }
+
+    function autoUpdate() {
+        getLatestUpdate();
+        setTimeout(autoUpdate, 3000);
+    }
+
+    function getLatestUpdate() {
+
+        $('#type_menu').on('click', 'a', function () {
+            $("#type_menu li").removeClass("active");
+            $(this).parents('li').addClass('active');
+        });
+
+        $.ajax({
+            url: url + "getAccount&includeAssets=true&account=" + memberId,
+            success: function (data) {
+                var myObj = JSON.parse(data);
+                if (myObj.balanceNQT) {
+                    $('#WOCAmt').text(numberWithCommas(round(myObj.balanceNQT / 100000000, 2)));
+                }
+            }
+        });
+
+        $.ajax({
+            url: url + "getAccountAssets&includeAssetInfo=true&account=" + memberId, // + '&asset=' + $('#typeId').val(),
+            success: function (data) {
+                var myObj = JSON.parse(data);
+                var multiplyValue = 100;
+                var decimals = 0;
+                myObj.accountAssets.forEach(function (entry) {
+                    decimals = entry.decimals;
+                    if (entry.decimals == 8) {
+                        multiplyValue = 100000000;
+                    } else {
+                        multiplyValue = 100;
+                    }
+                    //alert(entry.asset);
+                    switch(entry.asset) {
+                        case '16460643380140819224':
+                            $('#UsdAmount').text(numberWithCommas(entry.quantityQNT / multiplyValue));
+                            break;
+                        case '17837276898690363102':
+                            $('#CnyAmount').text(numberWithCommas(entry.quantityQNT / multiplyValue));
+                            break;
+                        case '14451580695516078834':
+                            $('#BtcAmount').text(numberWithCommas(entry.quantityQNT / multiplyValue));
+                            break;
+                    }
+                    if (entry.asset == $('#typeId').val()) {
+                        $('#AssetAmt').text(numberWithCommas(round(entry.quantityQNT / multiplyValue, decimals)));
+                        $('.AssetUnit').text(entry.name);
+
+                        if (entry.decimals == 8) {
+                            $("#txtBuyPrice").attr({ "min": 0.00000001 });
+                            $("#txtSellPrice").attr({ "min": 0.00000001 });
+                            $('#minDecimal').text(8);
+                        } else {
+                            $("#txtBuyPrice").attr({ "min": 0.01 });
+                            $("#txtSellPrice").attr({ "min": 0.01 });
+                            $('#minDecimal').text(2);
+                        }
+                    }
+
+                });
+            }
+        });
+
+        $.ajax({
+            url: myurl + "api/getLatest/" + memberId + "?type=" + $('#typeId').val(),
+            headers: { 'Authorization': token },
+            success: function (data) {
+
+                var price = 0.00;
+                var qty = 0;
+                var no = 1;
+                var decimals = $('#minDecimal').text();
+
+                $('#selllist1 tbody > tr').remove();
+                for (i = 0; i < data.selllist.length; ++i) {
+                    no = i + 1.00;
+                    price = data.selllist[i].Price;
+                    qty = data.selllist[i].totalQty;
+                    $('#selllist1').append('<tr onclick="putPrice(' + price + ',' + qty + ')"><td>' + $('#msgSell').text() + no + '</td><td align="right" width="40%">' + price.toFixed(decimals) + '</td><td align="right" width="40%">' + qty + '</td></tr>');
+                }
+
+                no = data.buylist.length;
+                $('#buylist1 tbody > tr').remove();
+                for (i = 0; i < data.buylist.length; ++i) {
+                    price = data.buylist[i].Price;
+                    qty = data.buylist[i].totalQty;
+                    $('#buylist1').append('<tr onclick="putPrice(' + price + ',' + qty + ')"><td>' + $('#msgBuy').text() + no + '</td><td align="right" width="40%">' + price.toFixed(decimals) + '</td><td align="right" width="40%">' + qty + '</td></tr>');
+                    no = no - 1.00;
+                }
+
+                if ($.fn.dataTable.isDataTable('#current')) {
+                    var delTable = $('#current').DataTable();
+                    delTable.destroy();
+                }
+                var tablec = $('#current').DataTable({
+                    columns: [
+                        {
+                            "data": null,
+                            "render": function (data, type, row) {
+                                var date = new Date(data.UpdatedAt);
+
+                                return date.toString().substring(4, 25);
+                            }
+                        },
+                        {
+                            "data": "IsBuying",
+                            "render": function (data) {
+                                switch (data) {
+                                    case false: return $('#msgSelling').text();
+                                    case true: return $('#msgBuying').text();
+                                    default: return data;
+                                }
+                            }
+                        },
+                        {
+                            "data": "Price",
+                            "render": function (data) {
+                                return data.toFixed($('#minDecimal').text());
+                            }
+                        },
+                        {
+                            "data": "Qty",
+                            "render": function (data) {
+                                return data.toFixed(8);
+                            }
+                        },
+                        {
+                            "data": "QtyBal",
+                            "render": function (data) {
+                                return data.toFixed(8);
+                            }
+                        },
+                        {
+                            "data": null,
+                            "render": function () {
+                                return $('#msgPending').text();
+                            }
+                        },
+                        {
+                            "data": "RowID",
+                            "render": function (data) {
+                                return '<button onclick="cancelClicked(\'' + data + '\')">' + $('#msgCancel').text() + '</button>';
+                            }
+                        }
+                    ],
+                    columnDefs: [
+                        //{
+                        //    "targets": [1],
+                        //    "visible": false
+                        //},
+                        { className: "dt-left", "targets": [0] },
+                        { className: "dt-center", "targets": [1] },
+                        { className: "dt-right", "targets": [2] },
+                        { className: "dt-right", "targets": [3] },
+                        { className: "dt-right", "targets": [4] },
+                        { className: "dt-center", "targets": [5] },
+                    ],
+                    createdRow: function (row, data, rowIndex) {
+                        // Per-cell function to do whatever needed with cells
+                        $.each($('td', row), function (colIndex) {
+                            // For example, adding data-* attributes to the cell
+                            if (colIndex == 0) {
+                                $(this).attr('data-title', $('#msgDate').text());
+                            }
+                            if (colIndex == 1) {
+                                $(this).attr('data-title', "");
+                            }
+                            if (colIndex == 2) {
+                                $(this).attr('data-title', $('#msgPrice').text() + ' ' + $('#AssetUnit').text());
+                            }
+                            if (colIndex == 3) {
+                                $(this).attr('data-title', $('#msgQty').text());
+                            }
+                            if (colIndex == 4) {
+                                $(this).attr('data-title', $('#msgBal').text());
+                            }
+                            if (colIndex == 5) {
+                                $(this).attr('data-title', $('#msgStatus').text());
+                            }
+                            if (colIndex == 6) {
+                                $(this).attr('data-title', "");
+                            }
+                        });
+                    },
+                    searching: false,
+                    info: false,
+                    bLengthChange: false,
+                    bSort: false,
+                    stateSave: true,
+                    data: data.myCurrent
+                });
+
+                if ($.fn.dataTable.isDataTable('#history')) {
+                    var delTable2 = $('#history').DataTable();
+                    delTable2.destroy();
+                }
+                var tableh = $('#history').DataTable({
+                    columns: [
+                        {
+                            "data": null,
+                            "render": function (data, type, row) {
+                                var date = new Date(data.UpdatedAt);
+
+                                return date.toString().substring(4, 25);
+                            }
+                        },
+                        {
+                            "data": "IsBuying",
+                            "render": function (data) {
+                                switch (data) {
+                                    case false: return $('#msgSelling').text();
+                                    case true: return $('#msgBuying').text();
+                                    default: return data;
+                                }
+                            }
+                        },
+                        {
+                            "data": "Price",
+                            "render": function (data) {
+                                return data.toFixed($('#minDecimal').text());
+                            }
+                        },
+                        {
+                            "data": "Qty",
+                            "render": function (data) {
+                                return data.toFixed(8);
+                            }
+                        },
+                        {
+                            "data": "QtyBal",
+                            "render": function (data) {
+                                return data.toFixed(8);
+                            }
+                        },
+                        {
+                            "data": null,
+                            "render": function (data) {
+                                if (data.PriceBal > 0 && data.IsBuying) {
+                                    return data.PriceBal.toFixed(2);
+                                } else {
+                                    return '0.00';
+                                }
+                            }
+                        },
+                        {
+                            "data": null,
+                            "render": function (data) {
+                                return data.Status == 1 ? $('#msgCompleted').text() : $('#msgCancelled').text();
+                            }
+                        }
+                    ],
+                    columnDefs: [
+                        //{
+                        //    "targets": [1],
+                        //    "visible": false
+                        //},
+                        { className: "dt-left", "targets": [0] },
+                        { className: "dt-center", "targets": [1] },
+                        { className: "dt-right", "targets": [2] },
+                        { className: "dt-right", "targets": [3] },
+                        { className: "dt-right", "targets": [4] },
+                        { className: "dt-right", "targets": [5] },
+                        { className: "dt-center", "targets": [6] },
+                    ],
+                    createdRow: function (row, data, rowIndex) {
+                        // Per-cell function to do whatever needed with cells
+                        $.each($('td', row), function (colIndex) {
+                            // For example, adding data-* attributes to the cell
+                            if (colIndex == 0) {
+                                $(this).attr('data-title', $('#msgDate').text());
+                            }
+                            if (colIndex == 1) {
+                                $(this).attr('data-title', "");
+                            }
+                            if (colIndex == 2) {
+                                $(this).attr('data-title', $('#msgPrice').text() + ' ' + $('#AssetUnit').text());
+                            }
+                            if (colIndex == 3) {
+                                $(this).attr('data-title', $('#msgQty').text());
+                            }
+                            if (colIndex == 4) {
+                                $(this).attr('data-title', $('#msgBal').text());
+                            }
+                            if (colIndex == 5) {
+                                $(this).attr('data-title', $('#msgRefund').text());
+                            }
+                            if (colIndex == 6) {
+                                $(this).attr('data-title', $('#msgStatus').text());
+                            }
+                        });
+                    },
+                    searching: false,
+                    info: false,
+                    bLengthChange: false,
+                    bSort: false,
+                    stateSave: true,
+                    data: data.myHistory
+                });
+
+                if ($.fn.dataTable.isDataTable('#alltrading')) {
+                    var delTable3 = $('#alltrading').DataTable();
+                    delTable3.destroy();
+                }
+                var tablea = $('#alltrading').DataTable({
+                    columns: [
+                        {
+                            "data": null,
+                            "render": function (data, type, row) {
+                                var date = new Date(data.UpdatedAt);
+
+                                return date.toString().substring(4, 25);
+                            }
+                        },
+                        {
+                            "data": "IsBuying",
+                            "render": function (data) {
+                                switch (data) {
+                                    case false: return $('#msgSelling').text();
+                                    case true: return $('#msgBuying').text();
+                                    default: return data;
+                                }
+                            }
+                        },
+                        {
+                            "data": "Price",
+                            "render": function (data) {
+                                return data.toFixed($('#minDecimal').text());
+                            }
+                        },
+                        {
+                            "data": "Qty",
+                            "render": function (data) {
+                                return data.toFixed(8);
+                            }
+                        },
+                        {
+                            "data": null,
+                            "render": function (data) {
+                                return data.Status == 1 ? $('#msgCompleted').text() : $('#msgCancelled').text();
+                            }
+                        }
+                    ],
+                    columnDefs: [
+                        //{
+                        //    "targets": [1],
+                        //    "visible": false
+                        //},
+                        { className: "dt-left", "targets": [0] },
+                        { className: "dt-center", "targets": [1] },
+                        { className: "dt-right", "targets": [2] },
+                        { className: "dt-right", "targets": [3] },
+                        { className: "dt-center", "targets": [4] },
+                    ],
+                    createdRow: function (row, data, rowIndex) {
+                        // Per-cell function to do whatever needed with cells
+                        $.each($('td', row), function (colIndex) {
+                            // For example, adding data-* attributes to the cell
+                            if (colIndex == 0) {
+                                $(this).attr('data-title', $('#msgDate').text());
+                            }
+                            if (colIndex == 1) {
+                                $(this).attr('data-title', "");
+                            }
+                            if (colIndex == 2) {
+                                $(this).attr('data-title', $('#msgPrice').text() + ' ' + $('#AssetUnit').text());
+                            }
+                            if (colIndex == 3) {
+                                $(this).attr('data-title', $('#msgQty').text());
+                            }
+                            if (colIndex == 4) {
+                                $(this).attr('data-title', $('#msgStatus').text());
+                            }
+                        });
+                    },
+                    searching: false,
+                    info: false,
+                    bLengthChange: false,
+                    bSort: false,
+                    stateSave: true,
+                    data: data.allLatest
+                });
+            }
+        });
+    }
+    </script>
+        <div style="display:none">
+            <lable data-i18n="exc_sell" id="msgSell">卖</lable>
+            <lable data-i18n="exc_buy" id="msgBuy">买</lable>
+            <lable data-i18n="exc_askcancel" id="msgAskCancel">确定取消订单（需收费 0.25 WOC）？</lable>
+            <lable data-i18n="exc_cancelfailed" id="msgCancelFailed">金额不足，取消失败。</lable>
+            <lable data-i18n="exc_ordercancelled" id="msgOrderCancelled">订单已取消</lable>
+            <lable data-i18n="exc_wrongpw" id="msgWrongPW">密码错误</lable>
+            <lable data-i18n="exc_buyrequested" id="msgBuyRequested">已挂单买入</lable>
+            <lable data-i18n="exc_nofund" id="msgNofund">金额不足</lable>
+            <lable data-i18n="exc_sellrequested" id="msgSellRequested">已挂单卖出</lable>
+            <lable data-i18n="exc_selling" id="msgSelling">卖出</lable>
+            <lable data-i18n="exc_buying" id="msgBuying">买入</lable>
+            <lable data-i18n="exc_cancel" id="msgCancel">取消</lable>
+            <lable data-i18n="exc_completed" id="msgCompleted">已完成</lable>
+            <lable data-i18n="exc_cancelled" id="msgCancelled">已取消</lable>
+            <lable data-i18n="exc_pending" id="msgPending">已挂单</lable>
+            <!--<lable data-i18n="exc_" id="msg"></lable>-->
+        </div>
+        <div style="width: 100%;height: 1000px;position: fixed;background: rgba(0,0,0,0.5);padding-top: 200px;z-index: 9;" id="loginDiv">
+            <div class="input-group col-md-6" style="margin: auto;">
+                <h4 style="background:silver;padding:15px;margin-bottom:0;" data-i18n="exc_keyinpw">请输入密码开始交易</h4>
+                <div class="input-append input-group pull-left">
+                    <input type="password" class="form-control" id="login_password1" name="login_password1" placeholder="请输入您的密码" data-i18n="[placeholder]your_passphrase" data-toggle="password" autofocus="" style="display: block;" onkeypress="return loginEnter(event)">
+
+                    <div class="input-group-btn" style="border:1px solid #fff;    height: 34px;">
+                        <button class="btn btn-flat" style="padding:5px 15px;" onclick="loginClicked()"><i class="fa fa-arrow-right text-muted"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="typeId" value="16460643380140819224" />
+        <input type="hidden" id="minDecimal" value="2" />
+        <h1 style="padding:0 40px" data-i18n="exc_title">资产交易</h1>
+        <div class="container" style="width:100%;">
+            <div class="row profile">
+                <div class="col-md-2">
+                    <div class="profile-sidebar">
+                        <!-- SIDEBAR MENU -->
+                        <div class="profile-usermenu">
+                            <ul class="nav" id="type_menu">
+                                <li class="active" >
+                                    <a href="#" onclick="loadType('USD')">
+                                        USD（美金）<br />
+                                        <label data-i18n="exc_qty">数量</label>： <label id="UsdAmount">0</label>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="loadType('CNY')">
+                                        CNY（人民币）  <br />
+                                        <label data-i18n="exc_qty">数量</label>： <label id="CnyAmount">0</label>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="loadType('BTC')">
+                                        BTC（比特币） <br />
+                                        <label data-i18n="exc_qty">数量</label>： <label id="BtcAmount">0</label>
+                                    </a>
+                                </li>
+                                <!--<li>
+                                    <a href="page1.html">LTC</a>
+                                </li>
+                                <li>
+                                    <a href="page1.html">BCC</a>
+                                </li>
+                                <li>
+                                    <a href="page1.html">MTC</a>
+                                </li>
+                                <li>
+                                    <a href="page1.html">OTC</a>
+                                </li><li>
+                                    <a href="page1.html">XCC</a>
+                                </li>-->
+                            </ul>
+                        </div>
+                        <!-- END MENU -->
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="profile-content">
+                       <div class="row">
+                           <div class="col-md-8">
+                               <div class="line">
+                                   <div class="col-md-6 line_right">
+                                       <h4><label data-i18n="exc_available">您有</label>：<label id="AssetAmt">0</label> <label id="AssetUnit" class="AssetUnit">USD</label></h4>
+                                       <div class="line_top"></div>
+                                        <br>
+                                       <div class="position_re">
+                                           <span class="position_ab"><span data-i18n="exc_buyprice">买入单价</span> <span class="AssetUnit"></span></span>
+                                           <input type="number" id="txtBuyPrice" onchange="calBuyPrice()" class="inp text" min="0.01" />
+                                           <br><br>
+                                       </div>
+
+                                       <div class="position_re">
+                                           <span class="position_ab2" data-i18n="exc_buyqty">买入数量 WOC</span>
+                                           <input type="number" id="txtBuyQty" onchange="calBuyPrice()" class="inp text" min="0.00000001" />
+                                           <br><br>
+                                       </div>
+                                       <div class="position_re">
+                                           <span class="position_ab3" data-i18n="exc_totalbuy">买入总金额</span>
+                                           <input type="number" id="txtBuyTotal" disabled class="inp_tot text" />
+                                           <br><br>
+                                       </div>
+                                        <button id="btnBuy" class="btn btn-md buy_btn" data-i18n="exc_buygd2">买入 WOC</button>
+                                        <small data-i18n="exc_fees">每挂单收费 0.25 WOC </small>
+
+                                   </div>
+                                   <div class="col-md-6 line_usd">
+                                       <h4><label data-i18n="exc_available">您有</label>：<label id="WOCAmt">0</label> WOC</h4>
+                                       <div class="line_top"></div>
+                                        <br>
+                                       <div class="position_re">
+                                           <span class="position_ab"><span data-i18n="exc_sellprice">卖出单价</span> <span class="AssetUnit"></span></span>
+                                           <input type="number" id="txtSellPrice" onchange="calSellPrice()" class="inp text" min="0.01" />
+                                           <br><br>
+                                       </div>
+
+                                       <div class="position_re">
+                                           <span class="position_ab2" data-i18n="exc_sellqty">卖出数量 WOC</span>
+                                           <input type="number" id="txtSellQty" onchange="calSellPrice()" class="inp text" min="0.00000001" />
+                                           <br><br>
+                                       </div>
+
+                                       <div class="position_re">
+                                           <span class="position_ab3" data-i18n="exc_totalsell">收益总金额</span>
+                                           <input type="number" id="txtSellTotal" disabled class="inp_tot text" />
+                                           <br><br>
+                                       </div>
+                                        <button id="btnSell" class="btn btn-md sell_btn"  data-i18n="exc_sellgd2">卖出 WOC</button>
+                                        <small data-i18n="exc_fees2">每挂单收费 0.25 WOC, 手续费0.2% </small>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-md-4">
+                                <div class="line_last">
+                                    <table style="width:100%" id="buylist1" class="red line_tbl">
+                                        <thead>
+                                            <tr class="line_tbl">
+                                                <th></th>
+                                                <th style="text-align:right"><label data-i18n="exc_uprice">单价</label> <label class="AssetUnit"></label></th>
+                                                <th style="text-align:right" data-i18n="exc_qty">数量</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                     </table>
+
+                                     <table style="width:100%" id="selllist1" class="green line_tbl">
+                                         <tbody></tbody>
+                                     </table>
+                                </div>
+                           </div>
+                       </div>
+                       <br><br>
+
+                        <div class="tabbable-panel">
+				            <div class="tabbable-line">
+					            <ul class="nav nav-tabs ">
+						            <li class="active">
+							            <a href="#tab_default_1" data-toggle="tab" data-i18n="exc_ctrading">
+                                            当前交易 </a>
+						            </li>
+						            <li>
+							            <a href="#tab_default_2" data-toggle="tab" data-i18n="exc_mytrading">
+                                            我的交易 </a>
+						            </li>
+						            <li>
+							            <a href="#tab_default_3" data-toggle="tab" data-i18n="exc_alltrading">
+                                            所有交易 </a>
+						            </li>
+					            </ul>
+					            <div class="tab-content">
+						            <div class="tab-pane active" id="tab_default_1">
+                                        <table style="width:100%" id="current" class="table table-hover admin-table admin-table-responsive">
+                                            <thead>
+                                                <tr class="line_tbl">
+                                                    <th data-i18n="exc_date">日期</th>
+                                                    <th></th>
+                                                    <th><label data-i18n="exc_uprice" id="msgPrice">单价</label> <label class="AssetUnit"></label></th>
+                                                    <th data-i18n="exc_qty">数量</th>
+                                                    <th data-i18n="exc_bal">剩余</th>
+                                                    <th data-i18n="exc_status">状态 </th>
+                                                    <th> </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+						            </div>
+						            <div class="tab-pane" id="tab_default_2">
+                                        <table style="width:100%" id="history" class="table table-hover admin-table admin-table-responsive">
+                                            <thead>
+                                                <tr class="line_tbl">
+                                                    <th data-i18n="exc_date" id="msgDate">日期 </th>
+                                                    <th></th>
+                                                    <th><label data-i18n="exc_uprice" id="msgPrice">单价</label> <label class="AssetUnit"></label></th>
+                                                    <th data-i18n="exc_qty" id="msgQty">数量 </th>
+                                                    <th data-i18n="exc_bal" id="msgBal">剩余</th>
+                                                    <th data-i18n="exc_refund" id="msgRefund">退款</th>
+                                                    <th data-i18n="exc_status" id="msgStatus">状态 </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+						            </div>
+						            <div class="tab-pane" id="tab_default_3">
+                                        <table style="width:100%" id="alltrading" class="table table-hover admin-table admin-table-responsive">
+                                            <thead>
+                                                <tr class="line_tbl">
+                                                    <th data-i18n="exc_date">日期 </th>
+                                                    <th></th>
+                                                    <th><label data-i18n="exc_uprice" id="msgPrice">单价</label> <label class="AssetUnit"></label></th>
+                                                    <th data-i18n="exc_qty">数量 </th>
+                                                    <th data-i18n="exc_status">状态 </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+						            </div>
+					            </div>
+				            </div>
+			            </div>
+                    </div>
+                </div>
+            </div>
+            <!-- begin::modal -->
+            <!--<div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            ×
+                        </span>
+                    </button>
+                </div>
+                        <div class="modal-body">
+                            <div class="lockscreen-item">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6">
+                                    <div class="lockscreen-credentials">
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                    <button type="button" class="btn btn-success"  data-dismiss="modal" aria-label="Close">
+                        Close
+                    </button>
+                </div>
+                    </div>
+                </div>
+            </div>-->
+            <!-- end:: modal -->
+        </div>
+    </div>
+
+
+    <!--<script src="js/bootstrap.js"></script>-->
